@@ -1,9 +1,7 @@
-![npm](https://img.shields.io/npm/dt/jasali)
-![npm](https://img.shields.io/npm/v/jasali?color=blue)
-[![GitHub license](https://img.shields.io/github/license/srebughini/JASALI.svg)](https://github.com/srebughini/JASALI/blob/master/LICENSE)
+<p align="center">
+<a href="https://imgur.com/8OYkCIh"><img src="https://i.imgur.com/8OYkCIhm.png" title="source: imgur.com" /></a>
+</p>
 
-
-# JASALI
 A Javascript library to estimate thermodynamic and transport properties of gas mixtures
 ```
 npm i jasali

@@ -1,21 +1,33 @@
 {
   "name": "jasali",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./src/jasali.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/srebughini/JASALI"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
-  "keywords": ["chemistry", "gas", "mixture", "thermodynamic", "transport", "properties", "NASA"],
+  "keywords": [
+    "chemistry",
+    "gas",
+    "mixture",
+    "thermodynamic",
+    "transport",
+    "properties",
+    "NASA"
+  ],
   "author": "srebughini",
   "license": "GPL-3.0",
   "description": "Library to estimate thermodynamic and transport properties of gas mixtures",
   "bugs": {
     "url": "https://github.com/srebughini/JASALI/issues"
   },
-  "homepage": "https://srebughini.github.io/JASALI/", 
-  "type": "module"
+  "homepage": "https://srebughini.github.io/JASALI/",
+  "type": "module",
+  "dependencies": {
+    "mocha": "^8.2.1",
+    "require": "^2.4.20"
+  }
 }

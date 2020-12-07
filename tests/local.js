@@ -1,4 +1,4 @@
-import {GasSpecie, GasState, GasMixtureComposition, GasMixture} from "./../modules/jasali.js"
+import {GasSpecie, GasState, GasMixtureComposition, GasMixture} from "../src/jasali.js"
 
 let state = GasState({ temperature: 393.15, pressure: 4e05})
 

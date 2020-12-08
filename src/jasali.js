@@ -223,7 +223,7 @@ export function GasSpecie({ name, gasState }) {
 
     function getMeanFreePath() {
         _calculateMeanFreePath();
-        return _v;
+        return _l;
     }
 
     //Diffusion
@@ -390,10 +390,6 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         return _compositionType;
     }
 
-    function getCompositionDictionary() {
-        return _compositionDictionary;
-    }
-
     function getMassFraction() {
         return _massFraction;
     }
@@ -414,7 +410,14 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         return _molecularWeight;
     }
 
-    return { getCompositionDictionary, getCompositionType, getMassFraction, getMoleFraction, getNumberOfSpecies, getSpecies, getMolecularWeight }
+    return {
+        getCompositionType, 
+        getMassFraction, 
+        getMoleFraction, 
+        getNumberOfSpecies, 
+        getSpecies, 
+        getMolecularWeight 
+    }
 }
 
 export function GasMixture({ gasState, mixtureComposition }) {

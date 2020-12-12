@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/srebughini/JASALI/issues"
   },
-  "homepage": "https://srebughini.github.io/JASALI/",
+  "homepage": "https://github.com/srebughini/JASALI",
   "type": "module",
   "dependencies": {
     "mocha": "^8.2.1",

@@ -1,4 +1,4 @@
-import { RoundFloat, RoundArray, Fractions, Parameters, RunAssertForFloat } from "../src/utils.js"
+import { RoundFloat, RunAssertForFloat, RoundArray, RunAssertForArray, RoundMatrix, RunAssertForMatrix, Fractions, Parameters } from "../src/utils.js"
 import * as assert from 'assert'
 
 describe('RoundFloat', function () {
@@ -8,8 +8,8 @@ describe('RoundFloat', function () {
 });
 
 describe('RunAssertForFloat', function () {
-  it('should return true when 0.9995 and 1.0 are compared', function () {
-    RunAssertForFloat(0.9995, 1.0);
+  it('should return true when 0.9995 and 1.0 are compared with 3 number of significants', function () {
+    RunAssertForFloat(0.9995, 1.0, 3);
   });
 });
 
@@ -18,6 +18,25 @@ describe('RoundArray', function () {
     assert.deepEqual(RoundArray([0.9995, 0.9994], 3), [1.0, 0.999]);
   });
 });
+
+describe('RunAssertForArray', function () {
+  it('should return true when [0.9995, 0.9994] and [1.0, 0.999] are compared with 3 number of significants', function () {
+    RunAssertForArray([0.9995, 0.9994], [1.0, 0.999], 3);
+  });
+});
+
+describe('RoundMatrix', function () {
+  it('should return [[1.0, 0.999], [0.999, 1.0]] to round [[0.9995, 0.9994], [0.9993, 0.9999]] with 3 number of significants', function () {
+    assert.deepEqual(RoundMatrix([[0.9995, 0.9994], [0.9993, 0.9999]], 3), [[1.0, 0.999], [0.999, 1.0]]);
+  });
+});
+
+describe('RunAssertForMatrix', function () {
+  it('should return true when [[1.0, 0.999], [0.999, 1.0]] and [[0.9995, 0.9994], [0.9993, 0.9999]] are compared with 3 number of significants', function () {
+    RunAssertForMatrix([[0.9995, 0.9994], [0.9993, 0.9999]], [[1.0, 0.999], [0.999, 1.0]], 3);
+  });
+});
+
 
 describe('Parameters.R', function () {
   let expected = RoundFloat(8314.)

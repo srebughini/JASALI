@@ -1,6 +1,6 @@
 {
   "name": "jasali",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./src/jasali.js",
   "repository": {
     "type": "git",

@@ -1,6 +1,8 @@
 node_modules/
 
 _local_test.js
+_air-example.js
+_pure-gas-example.js
 
 # Ignore files with sensitive environment variables
 .env

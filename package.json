@@ -1,6 +1,6 @@
 {
   "name": "jasali",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "main": "./src/jasali.js",
   "repository": {
     "type": "git",
@@ -16,11 +16,25 @@
     "thermodynamic",
     "transport",
     "properties",
+    "viscosity",
+    "thermal conductivity",
+    "enthalpy",
+    "entropy",
+    "specific heat",
+    "density",
+    "molecular weight",
+    "diffusivity",
+    "diffusion",
+    "chemical",
+    "asali",
+    "pure gas",
+    "engineering",
+    "reactor",
     "NASA"
   ],
   "author": "srebughini",
   "license": "GPL-3.0",
-  "description": "Library to estimate thermodynamic and transport properties of gas mixtures",
+  "description": "Library to estimate thermodynamic and transport properties of pure gas specie and gas mixtures",
   "bugs": {
     "url": "https://github.com/srebughini/JASALI/issues"
   },

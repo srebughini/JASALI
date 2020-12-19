@@ -11,8 +11,6 @@ let compositions = GasMixtureComposition(testMixture, "mole")
 
 let mixture = GasMixture({ gasState: state, mixtureComposition: compositions })
 
-console.log(mixture.getBinaryDiffusion())
-
 describe('GasMixture.getMassFraction()', function () {
   let expected = RoundArray([0.007691028712670252, 0.24416501931761103, 0.7481439519697187])
   it('should return ' + expected + ' when the test mixture is used', function () {

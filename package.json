@@ -1,6 +1,6 @@
 {
   "name": "jasali",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "./src/jasali.js",
   "types": "./src/jasali.d.ts",
   "repository": {
@@ -31,7 +31,8 @@
     "pure gas",
     "engineering",
     "reactor",
-    "NASA"
+    "NASA",
+    "TypeScript"
   ],
   "author": "srebughini",
   "license": "GPL-3.0",

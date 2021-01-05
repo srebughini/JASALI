@@ -458,17 +458,7 @@ export function GasMixture({ gasState, mixtureComposition }) {
     let _diffMix_update = true;
     let _cond_update = true;
 
-    //Species gas state
-    let _species = mixtureComposition.getSpecies();
-    let _numberOfSpecies = mixtureComposition.getNumberOfSpecies();
-    _species.map(specie => specie.updateGasState(gasState))
-
-    function getSpecies() {
-        return _species;
-    }
-
     //Composition
-    let _speciesMolecularWeight = _species.map(specie => specie.getMolecularWeight())
     let _moleFraction = mixtureComposition.getMoleFraction();
     let _massFraction = mixtureComposition.getMassFraction();
 
@@ -480,11 +470,25 @@ export function GasMixture({ gasState, mixtureComposition }) {
         return _moleFraction;
     }
 
-    //Mixture molecular weight and density
-    let _molecularWeight = mixtureComposition.getMolecularWeight();
+    //Species gas state
+    let _numberOfSpecies = mixtureComposition.getNumberOfSpecies();
+    let _species = mixtureComposition.getSpecies();
     let _temperature = gasState.getTemperature();
     let _pressure = gasState.getPressure();
+    
+    for (let i = 0; i < _numberOfSpecies; i++) {
+        let specieGasState = GasState({temperature: _temperature, pressure: _pressure*_moleFraction[i]})
+        _species[i].updateGasState(specieGasState);
+    }
 
+    function getSpecies() {
+        return _species;
+    }
+
+    //Mixture molecular weight and density
+    let _molecularWeight = mixtureComposition.getMolecularWeight();
+    let _speciesMolecularWeight = _species.map(specie => specie.getMolecularWeight())
+    
     function getMolecularWeight() {
         return _molecularWeight;
     }
@@ -550,7 +554,7 @@ export function GasMixture({ gasState, mixtureComposition }) {
     }
 
     //Entropy
-    let _sMole = _species.map(specie => specie.getMolarEntropy() + Parameters.R*Math.log(_pressure/Parameters.referencePressure));
+    let _sMole = _species.map(specie => specie.getMolarEntropy());
     let _sMixMole = 0.;
     let _sMixMass = 0.;
 
@@ -559,10 +563,9 @@ export function GasMixture({ gasState, mixtureComposition }) {
             _sMixMole = 0.;
             _sMixMass = 0.;
             for (let i = 0; i < _numberOfSpecies; i++) {
-                _sMixMole = _sMixMole + _sMole[i] * _moleFraction[i];
+                _sMixMole = _sMixMole + _sMole[i]*_moleFraction[i];
             }
 
-            _sMixMole = _sMixMole - Parameters.R*Math.log(_pressure/Parameters.referencePressure);
             _sMixMass = _sMixMole/_molecularWeight;
 
             _s_update = false;

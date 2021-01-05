@@ -177,6 +177,30 @@ export function GasSpecie({ name, gasState }) {
         return _sMass;
     }
 
+    //Internal Energy
+    function getMolarInternalEnergy() {
+        _calculateEnthalpy();
+        return _hMole - Parameters.R*_temperature;
+    }
+
+    function getMassInternalEnergy() {
+        _calculateEnthalpy();
+        return _hMass - Parameters.R*_temperature/_molecularWeight;
+    }
+
+    //Free Gibbs Energy
+    function getMolarGibbsFreeEnergy() {
+        _calculateEntropy();
+        _calculateEnthalpy();
+        return _hMole - _sMole*_temperature;
+    }
+
+    function getMassGibbsFreeEnergy() {
+        _calculateEntropy();
+        _calculateEnthalpy();
+        return _hMass - _sMass*_temperature;
+    }
+
     //Viscosity
     let _mu = 0.;
 
@@ -349,6 +373,10 @@ export function GasSpecie({ name, gasState }) {
         getMassEnthalpy,
         getMolarEntropy,
         getMassEntropy,
+        getMolarInternalEnergy,
+        getMassInternalEnergy,
+        getMolarGibbsFreeEnergy,
+        getMassGibbsFreeEnergy,
         getViscosity,
         getArithmeticMeanGasVelocity,
         getMeanFreePath,
@@ -522,8 +550,7 @@ export function GasMixture({ gasState, mixtureComposition }) {
     }
 
     //Entropy
-    let _sMole = _species.map(specie => specie.getMolarEntropy())
-    let _sMass = _species.map(specie => specie.getMassEntropy())
+    let _sMole = _species.map(specie => specie.getMolarEntropy() + Parameters.R*Math.log(_pressure/Parameters.referencePressure));
     let _sMixMole = 0.;
     let _sMixMass = 0.;
 
@@ -533,8 +560,11 @@ export function GasMixture({ gasState, mixtureComposition }) {
             _sMixMass = 0.;
             for (let i = 0; i < _numberOfSpecies; i++) {
                 _sMixMole = _sMixMole + _sMole[i] * _moleFraction[i];
-                _sMixMass = _sMixMass + _sMass[i] * _massFraction[i];
             }
+
+            _sMixMole = _sMixMole - Parameters.R*Math.log(_pressure/Parameters.referencePressure);
+            _sMixMass = _sMixMole/_molecularWeight;
+
             _s_update = false;
         }
     }
@@ -548,6 +578,31 @@ export function GasMixture({ gasState, mixtureComposition }) {
         _calculateEntropy();
         return _sMixMass;
     }
+
+    //Internal Energy
+    function getMolarInternalEnergy() {
+        _calculateEnthalpy();
+        return _hMixMole - Parameters.R*_temperature;
+    }
+
+    function getMassInternalEnergy() {
+        _calculateEnthalpy();
+        return _hMixMass - Parameters.R*_temperature/_molecularWeight;
+    }
+
+    //Gibbs Free Energy
+    function getMolarGibbsFreeEnergy() {
+        _calculateEnthalpy();
+        _calculateEntropy();
+        return _hMixMole - _sMixMole*_temperature;
+    }
+
+    function getMassGibbsFreeEnergy() {
+        _calculateEnthalpy();
+        _calculateEntropy();
+        return _hMixMass - _sMixMass*_temperature;
+    }
+
 
     //Viscosity
     let _mu = _species.map(specie => specie.getViscosity());
@@ -706,6 +761,10 @@ export function GasMixture({ gasState, mixtureComposition }) {
         getMassEnthalpy,
         getMolarEntropy,
         getMassEntropy,
+        getMolarInternalEnergy,
+        getMassInternalEnergy,
+        getMolarGibbsFreeEnergy,
+        getMassGibbsFreeEnergy,
         getViscosity,
         getBinaryDiffusion,
         getMixtureDiffusion,

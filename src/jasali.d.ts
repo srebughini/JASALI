@@ -29,6 +29,14 @@ interface IGasSpecie {
 
   getMassEntropy(): number;
 
+  getMolarInternalEnergy(): number;
+
+  getMassInternalEnergy(): number;
+
+  getMolarGibbsFreeEnergy(): number;
+
+  getMassGibbsFreeEnergy(): number;
+
   getViscosity(): number;
 
   getArithmeticMeanGasVelocity(): number;
@@ -90,6 +98,14 @@ interface IGasMixture {
   getMolarEntropy(): number;
 
   getMassEntropy(): number;
+
+  getMolarInternalEnergy(): number;
+
+  getMassInternalEnergy(): number;
+
+  getMolarGibbsFreeEnergy(): number;
+
+  getMassGibbsFreeEnergy(): number;
 
   getViscosity(): number;
 

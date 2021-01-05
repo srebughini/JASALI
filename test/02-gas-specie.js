@@ -67,6 +67,34 @@ describe('GasSpecie.getMassEntropy()', function () {
   });
 });
 
+describe('GasSpecie.getMolarGibbsFreeEnergy()', function () {
+  let expected = RoundFloat(-47202067.1045753)
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    RunAssertForFloat(specie.getMolarGibbsFreeEnergy(), expected);
+  });
+});
+
+describe('GasSpecie.getMassGibbsFreeEnergy()', function () {
+  let expected = RoundFloat(-23415117.519185312)
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    RunAssertForFloat(specie.getMassGibbsFreeEnergy(), expected);
+  });
+});
+
+describe('GasSpecie.getMolarInternalEnergy()', function () {
+  let expected = RoundFloat(-501918.823517289)
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    RunAssertForFloat(specie.getMolarInternalEnergy(), expected);
+  });
+});
+
+describe('GasSpecie.getMassInternalEnergy()', function () {
+  let expected = RoundFloat(-248982.49078183668)
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    RunAssertForFloat(specie.getMassInternalEnergy(), expected);
+  });
+});
+
 describe('GasSpecie.getViscosity()', function () {
   let numberOfSignificants = 8
   let expected = RoundFloat(0.000010743165870564187, numberOfSignificants)

@@ -81,6 +81,34 @@ describe('GasMixture.getMassEntropy()', function () {
   });
 });
 
+describe('GasMixture.getMolarGibbsFreeEnergy()', function () {
+  let expected = RoundFloat(-69826421.3606023)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat(mixture.getMolarGibbsFreeEnergy(), expected);
+  });
+});
+
+describe('GasMixture.getMassGibbsFreeEnergy()', function () {
+  let expected = RoundFloat(-2664032.6387850647)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat(mixture.getMassGibbsFreeEnergy(), expected);
+  });
+});
+
+describe('GasMixture.getMolarInternalEnergy()', function () {
+  let expected = RoundFloat(-484115.14166169707)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat(mixture.getMolarInternalEnergy(), expected);
+  });
+});
+
+describe('GasMixture.getMassInternalEnergy()', function () {
+  let expected = RoundFloat(-18470.06495802595)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat(mixture.getMassInternalEnergy(), expected);
+  });
+});
+
 describe('GasMixture.getViscosity()', function () {
   let numberOfSignificants = 8
   let expected = RoundFloat(0.000022710191868890118, numberOfSignificants)

@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 
 export const Fractions = Object.freeze({ MOLE: "mole", MASS: "mass" });
-export const Parameters = Object.freeze({ R: 8314., pi: 3.14159265358979323846, k: 1.3806488 });
+export const Parameters = Object.freeze({ R: 8314., pi: 3.14159265358979323846, k: 1.3806488, referencePressure: 1e05});
 
 export function RoundFloat(num, numberOfSignificants = 3) {
     return Math.round((num + Number.EPSILON) * Math.pow(10, numberOfSignificants)) / Math.pow(10, numberOfSignificants);

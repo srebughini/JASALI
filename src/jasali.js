@@ -160,7 +160,7 @@ export function GasSpecie({ name, gasState }) {
                 + _coefficients[4] * Math.pow(_temperature, 4.) / 4.
                 + _coefficients[6];
 
-            _sMole = _sMole * Parameters.R;
+            _sMole = Parameters.R*(_sMole - Math.log(_pressure/Parameters.referencePressure));
             _sMass = _sMole / _molecularWeight; //J/Kg/K
 
             _s_update = false;

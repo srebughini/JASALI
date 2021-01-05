@@ -54,14 +54,14 @@ describe('GasSpecie.getMassEnthalpy()', function () {
 });
 
 describe('GasSpecie.getMolarEntropy()', function () {
-  let expected = RoundFloat(138624.20754640116)
+  let expected = RoundFloat(127098.55622805038)
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     RunAssertForFloat(specie.getMolarEntropy(), expected);
   });
 });
 
 describe('GasSpecie.getMassEntropy()', function () {
-  let expected = RoundFloat(68766.10093180207)
+  let expected = RoundFloat(63048.671661036555)
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     RunAssertForFloat(specie.getMassEntropy(), expected);
   });

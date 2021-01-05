@@ -68,14 +68,14 @@ describe('GasMixture.getMassEnthalpy()', function () {
 });
 
 describe('GasMixture.getMolarEntropy()', function () {
-  let expected = RoundFloat(196215.85942960755)
+  let expected = RoundFloat(184690.2081112568)
   it('should return ' + expected + ' when the test mixture is used', function () {
     RunAssertForFloat(mixture.getMolarEntropy(), expected);
   });
 });
 
 describe('GasMixture.getMassEntropy()', function () {
-  let expected = RoundFloat(7486.069650744993)
+  let expected = RoundFloat(7046.340523903804)
   it('should return ' + expected + ' when the test mixture is used', function () {
     RunAssertForFloat(mixture.getMassEntropy(), expected);
   });

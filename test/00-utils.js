@@ -59,6 +59,13 @@ describe('Parameters.k', function () {
   });
 });
 
+describe('Parameters.referencePressure', function () {
+  let expected = RoundFloat(1e05)
+  it('should return ' + expected, function () {
+    RunAssertForFloat(Parameters.referencePressure, expected);
+  });
+});
+
 describe('Fractions.MOLE', function () {
   it('should return "mole"', function () {
     assert.equal(Fractions.MOLE, "mole");

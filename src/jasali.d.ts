@@ -11,6 +11,11 @@ interface IGasSpecie {
   updateGasState(gasState: IGasState): this;
 
   /**
+   * Update mole fraction
+   */
+  updateMoleFraction(moleFraction: number): this;
+
+  /**
    * Mixture molecular weight and density
    */
   getDensity(): number;

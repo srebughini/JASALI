@@ -1,4 +1,4 @@
-import {AsaliError} from "./utils.js"
+import { AsaliError } from "./utils.js"
 
 let transportDict = {
     "AC3H4": [
@@ -4352,7 +4352,6 @@ let transportDict = {
 
 export default function TransportParameters() {
     let _transportDict = transportDict;
-
 
     function getGeometry(gasSpecieName) {
         try {

@@ -33,6 +33,7 @@ export function GasSpecie({ name, gasState }) {
     let _polar = _transport.getPolar(_name);
     let _collision = _transport.getCollision(_name);
     let _molecularWeight = _transport.getMolecularWeight(_name);
+    let _molefraction = 1.
 
     //Bools for speed up
     let _cp_update = true;
@@ -61,6 +62,12 @@ export function GasSpecie({ name, gasState }) {
         _temperature = gasState.getTemperature();
         _pressure = gasState.getPressure();
         _resetBools();
+        return this;
+    }
+
+    //Update mole fraction (using only when in mixtures)
+    function updateMoleFraction(moleFraction){
+        _molefraction = moleFraction;
         return this;
     }
 
@@ -160,7 +167,7 @@ export function GasSpecie({ name, gasState }) {
                 + _coefficients[4] * Math.pow(_temperature, 4.) / 4.
                 + _coefficients[6];
 
-            _sMole = Parameters.R*(_sMole - Math.log(_pressure/Parameters.referencePressure));
+            _sMole = Parameters.R*(_sMole - Math.log(_pressure/Parameters.referencePressure) - Math.log(_molefraction));
             _sMass = _sMole / _molecularWeight; //J/Kg/K
 
             _s_update = false;
@@ -364,6 +371,7 @@ export function GasSpecie({ name, gasState }) {
 
     return {
         updateGasState,
+        updateMoleFraction,
         getName,
         getMolecularWeight,
         getDensity,
@@ -477,8 +485,7 @@ export function GasMixture({ gasState, mixtureComposition }) {
     let _pressure = gasState.getPressure();
     
     for (let i = 0; i < _numberOfSpecies; i++) {
-        let specieGasState = GasState({temperature: _temperature, pressure: _pressure*_moleFraction[i]})
-        _species[i].updateGasState(specieGasState);
+        _species[i].updateMoleFraction(_moleFraction[i]);
     }
 
     function getSpecies() {

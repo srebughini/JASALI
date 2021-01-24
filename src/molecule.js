@@ -5,6 +5,10 @@ let moleculesDict = {
     "AC3H4": {
         elementsSymbol: ["C", "H"],
         numberOfAtoms: [3, 4]
+    },
+    "H2": {
+        elementsSymbol: ["H"],
+        numberOfAtoms: [2]
     }
 }
 

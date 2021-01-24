@@ -1,4 +1,4 @@
-import {AsaliError} from "./utils.js"
+import { AsaliError } from "./utils.js"
 
 let thermoDict = {
     "AC3H4": [

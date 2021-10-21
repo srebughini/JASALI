@@ -10,7 +10,27 @@ import {
     AsaliError,
     UniqueArray
 } from "./utils.js"
+import {
+    multiply,
+    transpose,
+    zeros,
+    diag,
+    log,
+    add,
+    matrix,
+    subset,
+    index,
+    range,
+    concat,
+    lusolve,
+    divide,
+    sum,
+    norm,
+    reshape
+  } from 'mathjs'
 import MoleculeComposition from "./molecule.js"
+
+
 
 export function GasState({
     temperature,
@@ -86,6 +106,7 @@ export function GasSpecie({
     //Update mole fraction (using only when in mixtures)
     function updateMoleFraction(moleFraction) {
         _molefraction = moleFraction;
+        _resetBools();
         return this;
     }
 
@@ -414,31 +435,87 @@ export function GasSpecie({
     }
 }
 
-export function GasMixtureComposition(compositionArray, compositionType) {
-    let _compositionType = compositionType;
-    let _numberOfSpecies = compositionArray.length;
-    let _species = compositionArray.map(compositionDictionary => compositionDictionary.specie);
-    let _speciesName = _species.map(specieDictionary => specieDictionary.getName());
-    let _moleFraction = new Array(_numberOfSpecies);
-    let _massFraction = new Array(_numberOfSpecies);
+export function GasMixture({
+    mixtureComposition,
+    gasState,
+    compositionType
+}) {
+    //Bools for speed up
+    let _cp_update = true;
+    let _h_update = true;
+    let _s_update = true;
+    let _mu_update = true;
+    let _diff_update = true;
+    let _diffMix_update = true;
+    let _cond_update = true;
+
+    //Reset bools
+    function _resetBools() {
+        _cp_update = true;
+        _h_update = true;
+        _s_update = true;
+        _mu_update = true;
+        _diff_update = true;
+        _diffMix_update = true;
+        _cond_update = true;
+    }
+
+    //Species, elements and gas state
+    let _compositionType = compositionType
+    let _speciesName = Object.keys(mixtureComposition);
+    let _numberOfSpecies = _speciesName.length;
     let _elementsCompositionDictionary = {};
     let _molecularWeight = 0.;
-    let _numberOfElements = 0.;
     let _elementsSymbolList = new Array();
     let _speciesToelementsMatrix = new Array(_numberOfSpecies);
+    let _species = new Array(_numberOfSpecies);
+    let _moleFraction = new Array(_numberOfSpecies);
+    let _massFraction = new Array(_numberOfSpecies);
+
+    let _temperature = gasState.getTemperature();
+    let _pressure = gasState.getPressure();
+
 
     if (_compositionType == Fractions.MOLE) {
-        _moleFraction = compositionArray.map(compositionDictionary => compositionDictionary.value);
+        let compositionArray = new Array(_numberOfSpecies);
+
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            _species[i] = GasSpecie({
+                name: _speciesName[i],
+                gasState: gasState
+            });
+            _moleFraction[i] = mixtureComposition[_speciesName[i]];
+            compositionArray[i] = {
+                "specie": _species[i],
+                "value": _moleFraction[i]
+            };
+        }
         _molecularWeight = compositionArray.map(compositionDictionary => compositionDictionary.value * compositionDictionary.specie.getMolecularWeight()).reduce((a, b) => a + b, 0);
         _massFraction = compositionArray.map(compositionDictionary => compositionDictionary.value * compositionDictionary.specie.getMolecularWeight() / _molecularWeight);
     } else if (_compositionType == Fractions.MASS) {
-        _massFraction = compositionArray.map(compositionDictionary => compositionDictionary.value);
+        let compositionArray = new Array(_numberOfSpecies);
+
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            _species[i] = GasSpecie({
+                name: _speciesName[i],
+                gasState: gasState
+            });
+            _massFraction[i] = mixtureComposition[_speciesName[i]];
+            compositionArray[i] = {
+                "specie": _species[i],
+                "value": _massFraction[i]
+            };
+        }
         _molecularWeight = compositionArray.map(compositionDictionary => compositionDictionary.value / compositionDictionary.specie.getMolecularWeight()).reduce((a, b) => a + b, 0);
         _moleFraction = compositionArray.map(compositionDictionary => compositionDictionary.value / compositionDictionary.specie.getMolecularWeight() / _mixtureMolecularWeight);
     }
 
     if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-16) {
         AsaliError("Composition sum != 1");
+    } else {
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            _species[i].updateMoleFraction(_moleFraction[i]);
+        }
     }
 
     for (let i = 0; i < _numberOfSpecies; i++) {
@@ -447,7 +524,7 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         _elementsSymbolList = _elementsSymbolList.concat(molecule.getElementsSymbol()).filter(UniqueArray);
     }
 
-    _numberOfElements = _elementsSymbolList.length;
+    let _numberOfElements = _elementsSymbolList.length;
 
     for (let i = 0; i < _numberOfSpecies; i++) {
         _speciesToelementsMatrix[i] = new Array(_numberOfElements).fill(0);
@@ -456,6 +533,24 @@ export function GasMixtureComposition(compositionArray, compositionType) {
                 _speciesToelementsMatrix[i][j] = _elementsCompositionDictionary[_speciesName[i]][_elementsSymbolList[j]];
             }
         }
+    }
+
+    function updateGasState(gasState) {
+        _temperature = gasState.getTemperature();
+        _pressure = gasState.getPressure();
+        _resetBools();
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            _species[i].updateGasState(gasState)
+        }
+        return this;
+    }
+
+    function getTemperature() {
+        return _temperature;
+    }
+
+    function getPressure() {
+        return _pressure;
     }
 
     function getCompositionType() {
@@ -470,11 +565,10 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         return _moleFraction;
     }
 
-    function getNumberOfSpecies() {
-        return _numberOfSpecies;
-    }
-
     function getSpecies() {
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            _species[i].updateMoleFraction(1.);
+        }
         return _species;
     }
 
@@ -482,8 +576,8 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         return _speciesName;
     }
 
-    function getMolecularWeight() {
-        return _molecularWeight;
+    function getNumberOfSpecies() {
+        return _numberOfSpecies;
     }
 
     function getNumberOfElements() {
@@ -502,159 +596,7 @@ export function GasMixtureComposition(compositionArray, compositionType) {
         return _speciesToelementsMatrix;
     }
 
-    function getSpeciesMolarSpecificHeat() {
-        return _species.map(specieDictionary => specieDictionary.getsMolarSpecificHeat())
-    }
-
-    function getSpeciesMassSpecificHeat() {
-        return _species.map(specieDictionary => specieDictionary.getMassSpecificHeat())
-    }
-
-    function getSpeciesMolarEnthalpy() {
-        return _species.map(specieDictionary => specieDictionary.getMolarEnthalpy())
-    }
-
-    function getSpeciesMassEnthalpy() {
-        return _species.map(specieDictionary => specieDictionary.getMassEnthalpy())
-    }
-
-    function getSpeciesMolarEntropy() {
-        return _species.map(specieDictionary => specieDictionary.getMolarEntropy())
-    }
-
-    function getSpeciesMassEntropy() {
-        return _species.map(specieDictionary => specieDictionary.getMassEntropy())
-    }
-
-    function getSpeciesMolarInternalEnergy() {
-        return _species.map(specieDictionary => specieDictionary.geMolarInternalEnergy())
-    }
-
-    function getSpeciesMassInternalEnergy() {
-        return _species.map(specieDictionary => specieDictionary.getMassInternalEnergy())
-    }
-
-    function getSpeciesMolarGibbsFreeEnergy() {
-        return _species.map(specieDictionary => specieDictionary.getMolarGibbsFreeEnergy())
-    }
-
-    function getSpeciesMassGibbsFreeEnergy() {
-        return _species.map(specieDictionary => specieDictionary.getMassGibbsFreeEnergy())
-    }
-
-    function getSpeciesViscosity() {
-        return _species.map(specieDictionary => specieDictionary.getViscosity())
-    }
-
-    function getSpeciesArithmeticMeanGasVelocity() {
-        return _species.map(specieDictionary => specieDictionary.getArithmeticMeanGasVelocity())
-    }
-
-    function getSpeciesMeanFreePath() {
-        return _species.map(specieDictionary => specieDictionary.getMeanFreePath())
-    }
-
-    function getSpeciesDiffusion() {
-        return _species.map(specieDictionary => specieDictionary.getDiffusion())
-    }
-
-    function getSpeciesThermalConductivity() {
-        return _species.map(specieDictionary => specieDictionary.getThermalConductivity())
-    }
-
-    return {
-        getCompositionType,
-        getMassFraction,
-        getMoleFraction,
-        getNumberOfSpecies,
-        getSpecies,
-        getSpeciesName,
-        getNumberOfElements,
-        getMolecularWeight,
-        getElementsCompositionDictionary,
-        getElementsSymbolList,
-        getSpeciesToElementsMatrix,
-        getSpeciesMolarSpecificHeat,
-        getSpeciesMassSpecificHeat,
-        getSpeciesMolarEnthalpy,
-        getSpeciesMassEnthalpy,
-        getSpeciesMolarEntropy,
-        getSpeciesMassEntropy,
-        getSpeciesMolarInternalEnergy,
-        getSpeciesMassInternalEnergy,
-        getSpeciesMolarGibbsFreeEnergy,
-        getSpeciesMassGibbsFreeEnergy,
-        getSpeciesViscosity,
-        getSpeciesArithmeticMeanGasVelocity,
-        getSpeciesMeanFreePath,
-        getSpeciesDiffusion,
-        getSpeciesThermalConductivity
-    }
-}
-
-export function GasMixture({
-    gasState,
-    mixtureComposition
-}) {
-    //Bools for speed up
-    let _cp_update = true;
-    let _h_update = true;
-    let _s_update = true;
-    let _mu_update = true;
-    let _diff_update = true;
-    let _diffMix_update = true;
-    let _cond_update = true;
-
-    //Composition
-    let _moleFraction = mixtureComposition.getMoleFraction();
-    let _massFraction = mixtureComposition.getMassFraction();
-
-    function getMassFraction() {
-        return _massFraction;
-    }
-
-    function getMoleFraction() {
-        return _moleFraction;
-    }
-
-    //Species gas state
-    let _numberOfSpecies = mixtureComposition.getNumberOfSpecies();
-    let _species = mixtureComposition.getSpecies();
-    let _speciesName = mixtureComposition.getSpeciesName();
-    let _temperature = gasState.getTemperature();
-    let _pressure = gasState.getPressure();
-
-
-    for (let i = 0; i < _numberOfSpecies; i++) {
-        _species[i].updateMoleFraction(_moleFraction[i]);
-    }
-
-    function getSpecies() {
-        return _species;
-    }
-
-    function getSpeciesName() {
-        return _speciesName;
-    }
-
-    function getNumberOfElements() {
-        return mixtureComposition.getNumberOfElements();
-    }
-
-    function getElementsCompositionDictionary() {
-        return mixtureComposition.getElementsCompositionDictionary();
-    }
-
-    function getElementsSymbolList() {
-        return mixtureComposition.getElementsSymbolList();
-    }
-
-    function getSpeciesToElementsMatrix() {
-        return mixtureComposition.getSpeciesToElementsMatrix();
-    }
-
     //Mixture molecular weight and density
-    let _molecularWeight = mixtureComposition.getMolecularWeight();
     let _speciesMolecularWeight = _species.map(specie => specie.getMolecularWeight())
 
     function getMolecularWeight() {
@@ -663,6 +605,10 @@ export function GasMixture({
 
     function getDensity() {
         return _molecularWeight * _pressure / (Parameters.R * _temperature)
+    }
+
+    function getSpeciesMolecularWeight() {
+        return _speciesMolecularWeight;
     }
 
     //Specific heat
@@ -693,6 +639,14 @@ export function GasMixture({
         return _cpMixMass;
     }
 
+    function getSpeciesMolarSpecificHeat() {
+        return _species.map(specieDictionary => specieDictionary.getsMolarSpecificHeat())
+    }
+
+    function getSpeciesMassSpecificHeat() {
+        return _species.map(specieDictionary => specieDictionary.getMassSpecificHeat())
+    }
+
     //Enthalpy
     let _hMole = _species.map(specie => specie.getMolarEnthalpy())
     let _hMass = _species.map(specie => specie.getMassEnthalpy())
@@ -719,6 +673,14 @@ export function GasMixture({
     function getMassEnthalpy() {
         _calculateEnthalpy();
         return _hMixMass;
+    }
+
+    function getSpeciesMolarEnthalpy() {
+        return _species.map(specieDictionary => specieDictionary.getMolarEnthalpy())
+    }
+
+    function getSpeciesMassEnthalpy() {
+        return _species.map(specieDictionary => specieDictionary.getMassEnthalpy())
     }
 
     //Entropy
@@ -750,6 +712,14 @@ export function GasMixture({
         return _sMixMass;
     }
 
+    function getSpeciesMolarEntropy() {
+        return _species.map(specieDictionary => specieDictionary.getMolarEntropy())
+    }
+
+    function getSpeciesMassEntropy() {
+        return _species.map(specieDictionary => specieDictionary.getMassEntropy())
+    }
+
     //Internal Energy
     function getMolarInternalEnergy() {
         _calculateEnthalpy();
@@ -759,6 +729,14 @@ export function GasMixture({
     function getMassInternalEnergy() {
         _calculateEnthalpy();
         return _hMixMass - Parameters.R * _temperature / _molecularWeight;
+    }
+
+    function getSpeciesMolarInternalEnergy() {
+        return _species.map(specieDictionary => specieDictionary.geMolarInternalEnergy())
+    }
+
+    function getSpeciesMassInternalEnergy() {
+        return _species.map(specieDictionary => specieDictionary.getMassInternalEnergy())
     }
 
     //Gibbs Free Energy
@@ -774,6 +752,13 @@ export function GasMixture({
         return _hMixMass - _sMixMass * _temperature;
     }
 
+    function getSpeciesMolarGibbsFreeEnergy() {
+        return _species.map(specieDictionary => specieDictionary.getMolarGibbsFreeEnergy())
+    }
+
+    function getSpeciesMassGibbsFreeEnergy() {
+        return _species.map(specieDictionary => specieDictionary.getMassGibbsFreeEnergy())
+    }
 
     //Viscosity
     let _mu = _species.map(specie => specie.getViscosity());
@@ -799,6 +784,10 @@ export function GasMixture({
     function getViscosity() {
         _calculateViscosity();
         return _muMix;
+    }
+
+    function getSpeciesViscosity() {
+        return _species.map(specieDictionary => specieDictionary.getViscosity())
     }
 
     //Binary diffusivity and mixture diffusivity
@@ -892,6 +881,10 @@ export function GasMixture({
         return _diffMix;
     }
 
+    function getSpeciesDiffusion() {
+        return _species.map(specieDictionary => specieDictionary.getDiffusion())
+    }
+
     //Thermal conductivity
     let _cond = _species.map(specie => specie.getThermalConductivity());
     let _condMix = 0.;
@@ -915,9 +908,81 @@ export function GasMixture({
         return _condMix;
     }
 
+    function getSpeciesThermalConductivity() {
+        return _species.map(specieDictionary => specieDictionary.getThermalConductivity())
+    }
+
+    //Vacuum properties
+    function getSpeciesArithmeticMeanGasVelocity() {
+        return _species.map(specieDictionary => specieDictionary.getArithmeticMeanGasVelocity())
+    }
+
+    function getSpeciesMeanFreePath() {
+        return _species.map(specieDictionary => specieDictionary.getMeanFreePath())
+    }
+
+    //Chemical equilibrium
+    function calculateChemicalEquilibriumTP(iter = 10, tol = 1e-06) {
+        let _g = new Array(_numberOfSpecies);
+
+        for (let i = 0; i < _numberOfSpecies; i++) {
+            let s = _species[i];
+            s.updateMoleFraction(1.0);
+            _g[i] = s.getMolarGibbsFreeEnergy() / Parameters.R / _temperature;
+        }
+
+        let _x0 = matrix(_moleFraction)
+        let _ntot = _pressure / (Parameters.R * _temperature)
+        let _n0 = multiply(_x0, _ntot)
+        let _UL = matrix(_speciesToelementsMatrix)
+        let _bL = multiply(transpose(_UL), _n0)
+        let _LR = multiply(transpose(_UL), _ntot)
+
+        for (let i = 0; i < iter; i++) {
+            let _x = new Array(_numberOfSpecies)
+            let _x_inv = new Array(_numberOfSpecies)
+
+            for (let j = 0; j < _numberOfSpecies; j++) {
+                let v = Math.max(subset(_x0, index(j)), 1.e-16);
+                _x_inv[j] = -1.0 / v;
+                _x[j] = v;
+            }
+
+            let _UR = diag(_x_inv)
+            let _bU = add(add(log(_x), _g), -1.0)
+
+            let _A = zeros((_numberOfSpecies + _numberOfElements), (_numberOfSpecies + _numberOfElements))
+            _A = subset(_A, index(range(0, _numberOfSpecies), range(0, _numberOfElements)), _UL)
+            _A = subset(_A, index(range(0, _numberOfSpecies), range(_numberOfElements, _numberOfElements + _numberOfSpecies)), _UR)
+            _A = subset(_A, index(range(_numberOfSpecies, _numberOfSpecies + _numberOfElements), range(_numberOfElements, _numberOfElements + _numberOfSpecies)), _LR)
+            let _b = concat(_bU, _bL)
+            let _sol = lusolve(_A, _b)
+
+            _x = subset(_sol, index(range(_numberOfElements, _numberOfSpecies + _numberOfElements), 0))
+            _x = transpose(divide(_x, sum(_x)))
+            _x = reshape(_x, [-1])
+           
+            if ( norm(add(_x, multiply(_x0, -1))) < tol) {
+                _x0 = _x;
+                break;
+            }
+            else
+            {
+                _x0 = _x;
+            }
+        }
+
+        return _x0._data;
+    }
+
     return {
+        updateGasState,
+        getTemperature,
+        getPressure,
+        getCompositionType,
         getSpecies,
         getSpeciesName,
+        getNumberOfSpecies,
         getNumberOfElements,
         getElementsCompositionDictionary,
         getElementsSymbolList,
@@ -925,20 +990,37 @@ export function GasMixture({
         getMassFraction,
         getMoleFraction,
         getMolecularWeight,
+        getSpeciesMolecularWeight,
         getDensity,
         getMolarSpecificHeat,
         getMassSpecificHeat,
+        getSpeciesMolarSpecificHeat,
+        getSpeciesMassSpecificHeat,
         getMolarEnthalpy,
         getMassEnthalpy,
+        getSpeciesMolarEnthalpy,
+        getSpeciesMassEnthalpy,
         getMolarEntropy,
         getMassEntropy,
+        getSpeciesMolarEntropy,
+        getSpeciesMassEntropy,
         getMolarInternalEnergy,
         getMassInternalEnergy,
+        getSpeciesMolarInternalEnergy,
+        getSpeciesMassInternalEnergy,
         getMolarGibbsFreeEnergy,
         getMassGibbsFreeEnergy,
+        getSpeciesMolarGibbsFreeEnergy,
+        getSpeciesMassGibbsFreeEnergy,
         getViscosity,
+        getSpeciesViscosity,
         getBinaryDiffusion,
         getMixtureDiffusion,
-        getThermalConductivity
+        getSpeciesDiffusion,
+        getThermalConductivity,
+        getSpeciesThermalConductivity,
+        getSpeciesArithmeticMeanGasVelocity,
+        getSpeciesMeanFreePath,
+        calculateChemicalEquilibriumTP
     }
 }

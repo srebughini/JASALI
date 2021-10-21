@@ -1,7 +1,5 @@
 import {
   GasState,
-  GasSpecie,
-  GasMixtureComposition,
   GasMixture
 } from "../src/jasali.js"
 import {
@@ -10,7 +8,8 @@ import {
   RoundMatrix,
   RunAssertForArray,
   RunAssertForFloat,
-  RunAssertForMatrix
+  RunAssertForMatrix,
+  RunAssertForDictionary
 } from "../src/utils.js"
 import * as assert from 'assert'
 
@@ -18,35 +17,106 @@ let state = GasState({
   temperature: 393.15,
   pressure: 4e05
 })
-let testMixture = [{
-    "specie": GasSpecie({
-      name: "H2",
-      gasState: state
-    }),
-    "value": 0.1
-  },
-  {
-    "specie": GasSpecie({
-      name: "O2",
-      gasState: state
-    }),
-    "value": 0.2
-  },
-  {
-    "specie": GasSpecie({
-      name: "N2",
-      gasState: state
-    }),
-    "value": 0.7
-  }
-]
 
-let compositions = GasMixtureComposition(testMixture, "mole")
+let state_new = GasState({
+  temperature: 298.15,
+  pressure: 101325
+})
+
+let testMixture = {
+  "H2": 0.1,
+  "O2": 0.2,
+  "N2": 0.7
+}
 
 let mixture = GasMixture({
   gasState: state,
-  mixtureComposition: compositions
+  mixtureComposition: testMixture,
+  compositionType: "mole"
 })
+
+describe('GasMixture.getCompositionType()', function () {
+  it('should return "mole" when the test mixture is used', function () {
+    assert.deepEqual(mixture.getCompositionType(), "mole");
+  });
+});
+
+describe('GasMixture.getMassFraction()', function () {
+  let expected = RoundArray([0.007691028712670252, 0.24416501931761103, 0.7481439519697187])
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForArray(mixture.getMassFraction(), expected);
+  });
+});
+
+describe('GasMixture.getMoleFraction()', function () {
+  let expected = RoundArray([0.1, 0.2, 0.7])
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForArray(mixture.getMoleFraction(), expected);
+  });
+});
+
+describe('GasMixture.getNumberOfSpecies()', function () {
+  let expected = 3
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    assert.deepEqual(mixture.getNumberOfSpecies(), expected);
+  });
+});
+
+describe('GasMixture.getMolecularWeight()', function () {
+  let expected = RoundFloat(26.210798)
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    RunAssertForFloat(mixture.getMolecularWeight(), expected);
+  });
+});
+
+describe('GasMixture.getSpeciesName()', function () {
+  let expected = ["H2", "O2", "N2"]
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForArray(mixture.getSpeciesName(), expected);
+  });
+});
+
+describe('GasMixture.getElementsCompositionDictionary()', function () {
+  let expected = {
+    "H2": {
+      "H": 2
+    },
+    "O2": {
+      "O": 2
+    },
+    "N2": {
+      "N": 2
+    }
+  }
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForDictionary(mixture.getElementsCompositionDictionary(), expected);
+  });
+});
+
+describe('GasMixture.getNumberOfElements()', function () {
+  let expected = 3
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    assert.deepEqual(mixture.getNumberOfSpecies(), expected);
+  });
+});
+
+describe('GasMixture.getElementsSymbolList()', function () {
+  let expected = ["H", "O", "N"]
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForArray(mixture.getElementsSymbolList(), expected);
+  });
+});
+
+describe('GasMixture.getSpeciesToElementsMatrix()', function () {
+  let expected = [
+    [2, 0, 0],
+    [0, 2, 0],
+    [0, 0, 2]
+  ]
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    assert.deepEqual(mixture.getSpeciesToElementsMatrix(), expected);
+  });
+});
 
 describe('GasMixture.getMassFraction()', function () {
   let expected = RoundArray([0.007691028712670252, 0.24416501931761103, 0.7481439519697187])
@@ -154,7 +224,6 @@ describe('GasMixture.getViscosity()', function () {
   });
 });
 
-
 describe('GasMixture.getMixtureDiffusion()', function () {
   let numberOfSignificants = 8
   let expected = RoundArray([0.000034673450119418794, 0.000008829670412225227, 0.000009404100254623969], numberOfSignificants)
@@ -192,5 +261,39 @@ describe('GasMixture.getThermalConductivity()', function () {
   let expected = RoundFloat(0.043812946989620155, numberOfSignificants)
   it('should return ' + expected + ' when the test mixture is used', function () {
     RunAssertForFloat(mixture.getThermalConductivity(), expected, numberOfSignificants);
+  });
+});
+
+describe('GasMixture.updateGasState()', function () {
+  let numberOfSignificants = 3
+  mixture.updateGasState(state_new);
+  let expected = RoundArray([298.15, 101325], numberOfSignificants)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat([mixture.getTemperature(), mixture.getPressure()], expected, numberOfSignificants);
+  });
+  mixture.updateGasState(state);
+});
+
+
+describe('GasMixture.calculateChemicalEquilibriumTP()', function () {
+  let numberOfSignificants = 4
+  let s = GasState({
+    temperature: 3000,
+    pressure: 4e05
+  })
+
+  let m = GasMixture({
+    mixtureComposition: {
+      "CO": 0.1,
+      "CO2": 0.2,
+      "O2": 0.7
+    },
+    gasState: s,
+    compositionType: "mole"
+  })
+
+  let expected = RoundArray([0.0511194, 0.25659853, 0.6922820184], numberOfSignificants)
+  it('should return ' + expected + ' when the test mixture is used', function () {
+    RunAssertForFloat(m.calculateChemicalEquilibriumTP(), expected, numberOfSignificants);
   });
 });

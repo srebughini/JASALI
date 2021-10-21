@@ -27,7 +27,7 @@ import {
     sum,
     norm,
     reshape
-  } from 'mathjs'
+} from 'mathjs'
 import MoleculeComposition from "./molecule.js"
 
 
@@ -961,13 +961,11 @@ export function GasMixture({
             _x = subset(_sol, index(range(_numberOfElements, _numberOfSpecies + _numberOfElements), 0))
             _x = transpose(divide(_x, sum(_x)))
             _x = reshape(_x, [-1])
-           
-            if ( norm(add(_x, multiply(_x0, -1))) < tol) {
+
+            if (norm(add(_x, multiply(_x0, -1))) < tol) {
                 _x0 = _x;
                 break;
-            }
-            else
-            {
+            } else {
                 _x0 = _x;
             }
         }

@@ -73,7 +73,7 @@ let density = mixture.getDensity()
 let molecularWeight = mixture.getMolecularWeight()
 let viscosity = mixture.getViscosity()
 ```
-### 2.3 Gas mixture: Chemical equiilbrium at constant temperature and pressure
+### 2.3 Gas mixture: Chemical equilibrium at constant temperature and pressure
 
 ```javascript
 import {

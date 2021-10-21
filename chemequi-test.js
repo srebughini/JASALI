@@ -39,7 +39,6 @@ let LR = multiply(transpose(UL), ntot)
 console.log(ntot)
 console.log(LR)
 
-
 for (let i=0;i<1;i++){
   console.log("Iter " + i)
   let x = new Array(NS)
@@ -68,6 +67,5 @@ for (let i=0;i<1;i++){
   x = divide(x,sum(x))
   console.log(x)
   console.log(sum(x))
-
 }
 */

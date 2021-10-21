@@ -1,4 +1,6 @@
-import { AsaliError } from "./utils.js"
+import {
+    AsaliError
+} from "./utils.js"
 
 let thermoDict = {
     "AC3H4": [
@@ -7737,8 +7739,7 @@ export default function ThermoParameter() {
     function getHighTemperatureCoefficients(gasSpecieName) {
         try {
             return _thermoDict[gasSpecieName].slice(0, 7);
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -7747,13 +7748,14 @@ export default function ThermoParameter() {
     function getLowTemperatureCoefficients(gasSpecieName) {
         try {
             return _thermoDict[gasSpecieName].slice(7, 14);
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
     }
 
-    return { getHighTemperatureCoefficients, getLowTemperatureCoefficients }
+    return {
+        getHighTemperatureCoefficients,
+        getLowTemperatureCoefficients
+    }
 }
-

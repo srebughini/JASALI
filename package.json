@@ -44,6 +44,7 @@
   "type": "module",
   "dependencies": {
     "@chemistry/elements": "^2.9.0",
+    "mathjs": "^9.5.1",
     "mocha": "^8.2.1",
     "require": "^2.4.20"
   }

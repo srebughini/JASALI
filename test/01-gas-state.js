@@ -1,7 +1,15 @@
-import { GasState } from "../src/jasali.js"
-import { RoundFloat, RunAssertForFloat } from "../src/utils.js"
+import {
+  GasState
+} from "../src/jasali.js"
+import {
+  RoundFloat,
+  RunAssertForFloat
+} from "../src/utils.js"
 
-let state = GasState({ temperature: 393.15, pressure: 4e05 })
+let state = GasState({
+  temperature: 393.15,
+  pressure: 4e05
+})
 
 describe('GasState.getTemperature()', function () {
   let expected = RoundFloat(393.15)

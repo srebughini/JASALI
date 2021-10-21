@@ -850,11 +850,9 @@ let omegaDict = {
 function findLowerAndUpperIndex(value, array) {
     if (value < array[0]) {
         return [0, 1]
-    }
-    else if (value > array[value.length - 1]) {
+    } else if (value > array[value.length - 1]) {
         return [value.length - 2, value.length - 1]
-    }
-    else {
+    } else {
         for (let i = 0; i < array.length - 1; i++) {
             if (value >= array[i] && value < array[i + 1]) {
                 return [i, i + 1]
@@ -894,5 +892,3 @@ export function CollisionIntegral11(tr, dr) {
 export function CollisionIntegral22(tr, dr) {
     return collisionIntegralsEvaluation(omegaDict["22"], tr, dr)
 }
-
-

@@ -1,15 +1,52 @@
-import { GasState, GasSpecie, GasMixtureComposition, GasMixture } from "../src/jasali.js"
-import { RoundArray, RoundFloat, RoundMatrix, RunAssertForArray, RunAssertForFloat, RunAssertForMatrix } from "../src/utils.js"
+import {
+  GasState,
+  GasSpecie,
+  GasMixtureComposition,
+  GasMixture
+} from "../src/jasali.js"
+import {
+  RoundArray,
+  RoundFloat,
+  RoundMatrix,
+  RunAssertForArray,
+  RunAssertForFloat,
+  RunAssertForMatrix
+} from "../src/utils.js"
 import * as assert from 'assert'
 
-let state = GasState({ temperature: 393.15, pressure: 4e05 })
-let testMixture = [{ "specie": GasSpecie({ name: "H2", gasState: state }), "value": 0.1 },
-{ "specie": GasSpecie({ name: "O2", gasState: state }), "value": 0.2 },
-{ "specie": GasSpecie({ name: "N2", gasState: state }), "value": 0.7 }]
+let state = GasState({
+  temperature: 393.15,
+  pressure: 4e05
+})
+let testMixture = [{
+    "specie": GasSpecie({
+      name: "H2",
+      gasState: state
+    }),
+    "value": 0.1
+  },
+  {
+    "specie": GasSpecie({
+      name: "O2",
+      gasState: state
+    }),
+    "value": 0.2
+  },
+  {
+    "specie": GasSpecie({
+      name: "N2",
+      gasState: state
+    }),
+    "value": 0.7
+  }
+]
 
 let compositions = GasMixtureComposition(testMixture, "mole")
 
-let mixture = GasMixture({ gasState: state, mixtureComposition: compositions })
+let mixture = GasMixture({
+  gasState: state,
+  mixtureComposition: compositions
+})
 
 describe('GasMixture.getMassFraction()', function () {
   let expected = RoundArray([0.007691028712670252, 0.24416501931761103, 0.7481439519697187])

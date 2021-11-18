@@ -21,13 +21,22 @@ npm i jasali
 ### 2.1 Pure gas specie: O<sub>2</sub>
 
 ```javascript
-import { GasSpecie, GasState } from "jasali"
+import {
+  GasState,
+  GasSpecie
+} from "jasali"
 
 //Generate gas state object
-let state = GasState({ temperature: 393.15, pressure: 4e05 })
+let state = GasState({
+  temperature: 393.15,
+  pressure: 4e05
+})
 
 //Generate specie object
-let specie = GasSpecie({ name: "O2", gasState: state })
+let specie = GasSpecie({
+  name: "O2",
+  gasState: state
+})
 
 //Extract properties from the specie object
 let name = specie.getName()
@@ -37,30 +46,62 @@ let viscosity = specie.getViscosity()
 ### 2.2 Gas mixture: AIR
 
 ```javascript
-import { GasSpecie, GasState, GasMixtureComposition, GasMixture } from "jasali"
+import {
+  GasState,
+  GasMixture
+} from "jasali"
 
 //Generate gas state object
-let state = GasState({ temperature: 298.15, pressure: 101325 })
-
-//Generate pure gas specie objects
-let o2 = GasSpecie({ name: "O2", gasState: state })
-let n2 = GasSpecie({ name: "N2", gasState: state })
-let ar = GasSpecie({ name: "AR", gasState: state })
-
-//Generate mixture list
-let speciesList = [{ "specie": o2, "value": 0.21 }, { "specie": n2, "value": 0.78 }, { "specie": ar, "value": 0.01 }]
-
-//Generate mixture composition object
-let compositions = GasMixtureComposition(speciesList, "mole")
+let state = GasState({
+  temperature: 298.15,
+  pressure: 101325
+})
 
 //Generate mixture object
-let mixture = GasMixture({ gasState: state, mixtureComposition: compositions })
+let mixture = GasMixture({
+  mixtureComposition: {
+    "O2": 0.21,
+    "N2": 0.78,
+    "AR": 0.01
+  },
+  gasState: state,
+  compositionType: "mole"
+})
 
 //Extract properties from the mixture object
 let density = mixture.getDensity()
 let molecularWeight = mixture.getMolecularWeight()
 let viscosity = mixture.getViscosity()
 ```
+### 2.3 Gas mixture: Chemical equilibrium at constant temperature and pressure
+
+```javascript
+import {
+  GasState,
+  GasMixture
+} from "jasali"
+
+//Generate gas state object
+let state = GasState({
+  temperature: 3000,
+  pressure: 4e05
+})
+
+//Generate mixture object
+let mixture = GasMixture({
+  mixtureComposition: {
+    "CO": 0.1,
+    "CO2": 0.2,
+    "O2": 0.7
+  },
+  gasState: state,
+  compositionType: "mole"
+})
+
+//Extract chemical equilibrium composition
+let x = mixture.calculateChemicalEquilibriumTP()
+```
+
 ## 3. Available thermodynamic and transport properties
 Details on the properties estimated by **J**a**S**ali can be found [here](https://srebughini.github.io/ASALI/docs/api-javascript/).
 ## 4. Contacts

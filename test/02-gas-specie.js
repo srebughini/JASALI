@@ -1,9 +1,21 @@
-import { GasState, GasSpecie } from "../src/jasali.js"
-import { RoundFloat, RunAssertForFloat } from "../src/utils.js"
+import {
+  GasState,
+  GasSpecie
+} from "../src/jasali.js"
+import {
+  RoundFloat,
+  RunAssertForFloat
+} from "../src/utils.js"
 import * as assert from 'assert'
 
-let state = GasState({ temperature: 393.15, pressure: 4e05 })
-let specie = GasSpecie({ name: "H2", gasState: state })
+let state = GasState({
+  temperature: 393.15,
+  pressure: 4e05
+})
+let specie = GasSpecie({
+  name: "H2",
+  gasState: state
+})
 
 describe('GasSpecie.getName()', function () {
   it('should return "H2" when the specie is hydrogen', function () {

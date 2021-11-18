@@ -1,4 +1,6 @@
-import { AsaliError } from "./utils.js"
+import {
+    AsaliError
+} from "./utils.js"
 
 let transportDict = {
     "AC3H4": [
@@ -4356,8 +4358,7 @@ export default function TransportParameters() {
     function getGeometry(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][0];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4366,8 +4367,7 @@ export default function TransportParameters() {
     function getLJpotential(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][1];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4376,8 +4376,7 @@ export default function TransportParameters() {
     function getLJdiameter(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][2];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4386,8 +4385,7 @@ export default function TransportParameters() {
     function getDipole(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][3];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4396,8 +4394,7 @@ export default function TransportParameters() {
     function getPolar(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][4];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4406,8 +4403,7 @@ export default function TransportParameters() {
     function getCollision(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][5];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
@@ -4416,12 +4412,19 @@ export default function TransportParameters() {
     function getMolecularWeight(gasSpecieName) {
         try {
             return _transportDict[gasSpecieName][6];
-        }
-        catch (error) {
+        } catch (error) {
             console.log(error);
             AsaliError("Unknwon species name: " + gasSpecieName)
         }
     }
 
-    return { getGeometry, getLJpotential, getLJdiameter, getDipole, getPolar, getCollision, getMolecularWeight }
+    return {
+        getGeometry,
+        getLJpotential,
+        getLJdiameter,
+        getDipole,
+        getPolar,
+        getCollision,
+        getMolecularWeight
+    }
 }

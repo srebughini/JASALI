@@ -48,5 +48,9 @@
     "mathjs": "^9.5.2",
     "mocha": "^8.2.1",
     "require": "^2.4.20"
+  },
+  "devDependencies": {
+    "browser-resolve": "^2.0.0",
+    "esmify": "^2.1.1"
   }
 }

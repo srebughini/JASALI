@@ -103,9 +103,9 @@ let x = mixture.calculateChemicalEquilibriumTP()
 ```
 ### 2.4 HTML frontend
 
-This examples shows how to use **J**a**S**ali from a pure frontend html file:
+This examples shows how to use **J**a**S**ali from a pure frontend HTML file:
 ```html
-<script type="text/javascript" src="./js/jasali.js"></script>
+<script type="text/javascript" src="./jasali.js"></script>
 
 <script>
 function gasMixtureProperties()

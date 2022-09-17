@@ -101,7 +101,37 @@ let mixture = GasMixture({
 //Extract chemical equilibrium composition
 let x = mixture.calculateChemicalEquilibriumTP()
 ```
+### 2.4 HTML frontend
 
+This examples shows how to use **J**a**S**ali from a pure frontend html file:
+```html
+<script type="text/javascript" src="./js/jasali.js"></script>
+
+<script>
+function gasMixtureProperties()
+{
+  //Generate gas state object
+  let state = jasali.GasState({
+    temperature: 3000,
+    pressure: 4e05
+  })
+
+  //Generate mixture object
+  let mixture = jasali.GasMixture({
+    mixtureComposition: {
+      "CO": 0.1,
+      "CO2": 0.2,
+      "O2": 0.7
+    },
+    gasState: state,
+    compositionType: "mole"
+  })
+  
+  //Extract properties from the mixture object
+  let density = mixture.getDensity()
+}
+</script>
+```
 ## 3. Available thermodynamic and transport properties
 Details on the properties estimated by **J**a**S**ali can be found [here](https://srebughini.github.io/ASALI/docs/api-javascript/).
 ## 4. Contacts

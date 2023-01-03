@@ -45,12 +45,14 @@
   "type": "module",
   "dependencies": {
     "@chemistry/elements": "^2.9.0",
+    "core-js": "^3.23.3",
     "mathjs": "^9.5.2",
-    "mocha": "^8.2.1",
-    "require": "^2.4.20"
+    "mocha": "^10.2.0",
+    "require": "^0.4.4"
   },
   "devDependencies": {
     "browser-resolve": "^2.0.0",
-    "esmify": "^2.1.1"
+    "esmify": "^2.1.1",
+    "package.json": "^0.0.0"
   }
 }

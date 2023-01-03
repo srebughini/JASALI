@@ -194,7 +194,7 @@ let moleculesDict = {
     }
 }
 
-export default function MoleculeComposition(gasSpecieName) {
+export function MoleculeComposition(gasSpecieName) {
     let _moleculeDict = _checkSpecieName(gasSpecieName);
     let _numberOfElements = _moleculeDict.elementsSymbol.length;
 
@@ -233,4 +233,8 @@ export default function MoleculeComposition(gasSpecieName) {
         getNumberOfAtoms,
         getElementCounterDict
     }
+}
+
+export function getAvailableSpecies() {
+    return Object.keys(moleculesDict);
 }

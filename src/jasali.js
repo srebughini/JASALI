@@ -28,7 +28,7 @@ import {
     norm,
     reshape
 } from 'mathjs'
-import MoleculeComposition from "./molecule.js"
+import { MoleculeComposition } from "./molecule.js"
 
 
 

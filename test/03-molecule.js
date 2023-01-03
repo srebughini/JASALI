@@ -1,4 +1,4 @@
-import MoleculeComposition from "../src/molecule.js"
+import { MoleculeComposition } from "../src/molecule.js"
 import * as assert from 'assert'
 
 let molecule = MoleculeComposition("H2")

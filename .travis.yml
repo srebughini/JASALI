@@ -4,5 +4,4 @@ node_js:
   - 16
 
 script:
-  - npm install
   - npm test

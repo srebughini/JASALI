@@ -1,23 +1,8 @@
 language: node_js
 
-notifications:
-  email: false
+node_js: 
+  - 16
 
-before_install: npm config set progress=false && npm i -g npm@latest --no-audit
-
-install: npm ci --no-audit
-
-jobs:
-  include:
-  - node_js: lts/*
-    script:
-    - npm test
-    env: Runs the tests on node.js LTS.
-  - node_js: node
-    script:
-    - npm test
-    env: Runs the tests on node.js Stable.
-  - node_js: 16
-    script:
-    - npm test
-    env: Runs the tests on node.js version 16.
+script:
+  - npm install
+  - npm test

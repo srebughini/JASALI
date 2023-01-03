@@ -17,3 +17,7 @@ jobs:
     script:
     - npm test
     env: Runs the tests on node.js Stable.
+  - node_js: 16
+    script:
+    - npm test
+    env: Runs the tests on node.js version 16.

@@ -195,8 +195,13 @@ let moleculesDict = {
 }
 
 export function MoleculeComposition(gasSpecieName) {
-    let _moleculeDict = _checkSpecieName(gasSpecieName);
-    let _numberOfElements = _moleculeDict.elementsSymbol.length;
+    let _moleculeDict = undefined;
+    let _numberOfElements = undefined;
+
+    if (gasSpecieName != undefined) {
+        _moleculeDict = _checkSpecieName(gasSpecieName);
+        _numberOfElements = _moleculeDict.elementsSymbol.length;
+    }
 
     function _checkSpecieName(gasSpecieName) {
         try {
@@ -208,18 +213,31 @@ export function MoleculeComposition(gasSpecieName) {
     }
 
     function getElementsList() {
+        if (_moleculeDict == undefined) {
+            return [];
+        }
         return _moleculeDict.elementsSymbol.map(symbol => chemistryPkg.ChemElements.getBySymbol(symbol));
     }
 
     function getElementsSymbol() {
+        if (_moleculeDict == undefined) {
+            return "";
+        }
         return _moleculeDict.elementsSymbol;
     }
 
     function getNumberOfAtoms() {
+        if (_moleculeDict == undefined) {
+            return 0;
+        }
         return _moleculeDict.numberOfAtoms;
     }
 
     function getElementCounterDict() {
+        if (_moleculeDict == undefined) {
+            return {};
+        }
+
         let _elementCounter = {}
         for (let i = 0; i < _numberOfElements; i++) {
             _elementCounter[_moleculeDict.elementsSymbol[i]] = _moleculeDict.numberOfAtoms[i]
@@ -227,14 +245,15 @@ export function MoleculeComposition(gasSpecieName) {
         return _elementCounter;
     }
 
+    function getAvailableSpecies() {
+        return Object.keys(moleculesDict);
+    }
+
     return {
         getElementsList,
         getElementsSymbol,
         getNumberOfAtoms,
-        getElementCounterDict
+        getElementCounterDict,
+        getAvailableSpecies
     }
-}
-
-export function getAvailableSpecies() {
-    return Object.keys(moleculesDict);
 }

@@ -3,21 +3,21 @@ import * as assert from 'assert'
 
 let molecule = MoleculeComposition("H2")
 
-describe('GasState.getElementsSymbol()', function () {
+describe('MoleculeComposition.getElementsSymbol()', function () {
   let expected = ["H"]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getElementsSymbol(), expected);
   });
 });
 
-describe('GasState.getNumberOfAtoms()', function () {
+describe('MoleculeComposition.getNumberOfAtoms()', function () {
   let expected = [2]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getNumberOfAtoms(), expected);
   });
 });
 
-describe('GasState.getElementCounterDict()', function () {
+describe('MoleculeComposition.getElementCounterDict()', function () {
   let expected = {
     "H": 2
   }
@@ -26,7 +26,7 @@ describe('GasState.getElementCounterDict()', function () {
   });
 });
 
-describe('GasState.getElementsList()', function () {
+describe('MoleculeComposition.getElementsList()', function () {
   let expected = [{
     id: 1,
     symbol: 'H',
@@ -42,5 +42,12 @@ describe('GasState.getElementsList()', function () {
   }]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getElementsList(), expected);
+  });
+});
+
+describe('MoleculeComposition.getAvailableSpecies()', function () {
+  let expected = "AR"
+  it('should return ' + expected + ' as the first specie of the available species', function () {
+    assert.deepEqual(molecule.getAvailableSpecies()[0], expected);
   });
 });

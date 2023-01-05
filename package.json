@@ -1,6 +1,6 @@
 {
   "name": "jasali",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "./src/jasali.js",
   "types": "./src/jasali.d.ts",
   "repository": {
@@ -53,6 +53,6 @@
   "devDependencies": {
     "browser-resolve": "^2.0.0",
     "esmify": "^2.1.1",
-    "package.json": "^0.0.0"
+    "package.json": "0.0.0"
   }
 }

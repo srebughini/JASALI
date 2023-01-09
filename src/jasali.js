@@ -28,9 +28,7 @@ import {
     norm,
     reshape
 } from 'mathjs'
-import { MoleculeComposition } from "./molecule.js"
-
-
+import { Molecule } from "./molecule.js"
 
 export function GasState({
     temperature,
@@ -519,7 +517,7 @@ export function GasMixture({
     }
 
     for (let i = 0; i < _numberOfSpecies; i++) {
-        let molecule = MoleculeComposition(_speciesName[i])
+        let molecule = Molecule(_speciesName[i])
         _elementsCompositionDictionary[_speciesName[i]] = molecule.getElementCounterDict();
         _elementsSymbolList = _elementsSymbolList.concat(molecule.getElementsSymbol()).filter(UniqueArray);
     }
@@ -1022,3 +1020,6 @@ export function GasMixture({
         calculateChemicalEquilibriumTP
     }
 }
+
+export { Molecule } from "./molecule.js"
+export { Fractions } from "./utils.js"

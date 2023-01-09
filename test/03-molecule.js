@@ -1,23 +1,23 @@
-import { MoleculeComposition } from "../src/molecule.js"
+import { Molecule } from "../src/molecule.js"
 import * as assert from 'assert'
 
-let molecule = MoleculeComposition("H2")
+let molecule = Molecule("H2")
 
-describe('MoleculeComposition.getElementsSymbol()', function () {
+describe('Molecule.getElementsSymbol()', function () {
   let expected = ["H"]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getElementsSymbol(), expected);
   });
 });
 
-describe('MoleculeComposition.getNumberOfAtoms()', function () {
+describe('Molecule.getNumberOfAtoms()', function () {
   let expected = [2]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getNumberOfAtoms(), expected);
   });
 });
 
-describe('MoleculeComposition.getElementCounterDict()', function () {
+describe('Molecule.getElementCounterDict()', function () {
   let expected = {
     "H": 2
   }
@@ -26,7 +26,7 @@ describe('MoleculeComposition.getElementCounterDict()', function () {
   });
 });
 
-describe('MoleculeComposition.getElementsList()', function () {
+describe('Molecule.getElementsList()', function () {
   let expected = [{
     id: 1,
     symbol: 'H',
@@ -45,7 +45,7 @@ describe('MoleculeComposition.getElementsList()', function () {
   });
 });
 
-describe('MoleculeComposition.getAvailableSpecies()', function () {
+describe('Molecule.getAvailableSpecies()', function () {
   let expected = "AR"
   it('should return ' + expected + ' as the first specie of the available species', function () {
     assert.deepEqual(molecule.getAvailableSpecies()[0], expected);

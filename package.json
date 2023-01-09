@@ -1,6 +1,6 @@
 {
   "name": "jasali",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "./src/jasali.js",
   "types": "./src/jasali.d.ts",
   "repository": {

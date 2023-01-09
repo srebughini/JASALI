@@ -194,7 +194,7 @@ let moleculesDict = {
     }
 }
 
-export function MoleculeComposition(gasSpecieName) {
+export function Molecule(gasSpecieName) {
     let _moleculeDict = undefined;
     let _numberOfElements = undefined;
 

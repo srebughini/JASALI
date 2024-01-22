@@ -17,12 +17,33 @@ describe('Molecule.getNumberOfAtoms()', function () {
   });
 });
 
+describe('Molecule.getFormula()', function () {
+  let expected = "H2"
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    assert.deepEqual(molecule.getFormula(), expected);
+  });
+});
+
+describe('Molecule.getChemicalName()', function () {
+  let expected = "Hydrogen"
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    assert.deepEqual(molecule.getChemicalName(), expected);
+  });
+});
+
 describe('Molecule.getElementCounterDict()', function () {
   let expected = {
     "H": 2
   }
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getElementCounterDict(), expected);
+  });
+});
+
+describe('Molecule.getNameFromChemicalName()', function () {
+  let expected = "H2"
+  it('should return ' + expected + ' when the specie is hydrogen', function () {
+    assert.deepEqual(molecule.getNameFromChemicalName("Hydrogen"), expected);
   });
 });
 
@@ -42,12 +63,5 @@ describe('Molecule.getElementsList()', function () {
   }]
   it('should return ' + expected + ' when the specie is hydrogen', function () {
     assert.deepEqual(molecule.getElementsList(), expected);
-  });
-});
-
-describe('Molecule.getAvailableSpecies()', function () {
-  let expected = "AR"
-  it('should return ' + expected + ' as the first specie of the available species', function () {
-    assert.deepEqual(molecule.getAvailableSpecies()[0], expected);
   });
 });

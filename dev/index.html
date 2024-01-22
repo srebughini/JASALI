@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+  </head>
+  <body>
+    <main>
+        <h1>This is a Test of JASALI bundle version</h1>
+        <button type="button" onclick="runJasali()">Click to test JASALI!</button>
+        <p></p><p id="density"></p>
+    </main>
+    <script type="text/javascript" src="../jasali.js"></script>
+    <script>
+        function gasMixtureDensity()
+        {
+            /**
+             * Estimate gas mixture density in [kg/m3] 
+             */
+            //Generate gas state object
+            let state = jasali.GasState({
+                temperature: 3000,
+                pressure: 4e05
+            })
+
+            //Generate mixture object
+            let mixture = jasali.GasMixture({
+                mixtureComposition: {
+                "CO": 0.1,
+                "CO2": 0.2,
+                "O2": 0.7
+                },
+                gasState: state,
+                compositionType: "mole"
+            })
+            
+            //Extract properties from the mixture object
+            let density = mixture.getDensity();
+            return density;
+        }
+
+
+        function runJasali() {
+            /**
+             * Run JASALI and show the ouput to screen
+             */
+            // Gas mixture density
+            let density = gasMixtureDensity();
+            let basicOutput = "The density in kg/m<sup>3</sup> of the testing mixture is: ";
+            document.getElementById("density").innerHTML = basicOutput.concat(parseFloat(density).toExponential(3));           
+        }
+    </script>
+
+
+  </body>
+</html>

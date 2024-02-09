@@ -508,7 +508,7 @@ export function GasMixture({
         _moleFraction = compositionArray.map(compositionDictionary => compositionDictionary.value / compositionDictionary.specie.getMolecularWeight() / _mixtureMolecularWeight);
     }
 
-    if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-16) {
+    if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-08) {
         AsaliError("Composition sum != 1");
     } else {
         for (let i = 0; i < _numberOfSpecies; i++) {

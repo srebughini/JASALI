@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://imgur.com/8OYkCIh"><img src="https://i.imgur.com/8OYkCIhm.png" title="source: imgur.com" /></a>
+  <a href="https://srebughini.github.io/ASALI/"><img src="Logo.png"/></a>
 </p>
 <p align="center">
   <a href="https://www.npmjs.com/package/jasali"><img alt="npm" src="https://img.shields.io/npm/dt/jasali"></a>

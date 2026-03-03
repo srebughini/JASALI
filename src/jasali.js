@@ -254,7 +254,7 @@ export function GasSpecie({
     function _calculateViscosity() {
         if (_mu_update) {
             let tr = _temperature / _LJpotential;
-            let dr = 1.e06 * 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * Parameters.k * Math.pow(_LJdiameter, 3.));
+            let dr = 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * Parameters.k * Math.pow(_LJdiameter, 3.));
             let sigma = CollisionIntegral22(tr, dr);
             _mu = 1e-05 * (5 / 16) * Math.sqrt(Parameters.pi * Parameters.k * _temperature * _molecularWeight * 1.66054) / (Parameters.pi * sigma * Math.pow(_LJdiameter, 2));
             _mu_update = false;
@@ -304,7 +304,7 @@ export function GasSpecie({
         if (_diff_update) {
             let MWmix = _molecularWeight / 2.;
             let tr = _temperature / _LJpotential;
-            let dr = 1e06 * 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * Parameters.k * Math.pow(_LJdiameter, 3.));
+            let dr = 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * Parameters.k * Math.pow(_LJdiameter, 3.));
             let sigma = CollisionIntegral11(tr, dr);
             _diff = (3 / 16) * Math.sqrt(2. * Parameters.pi * Math.pow(Parameters.k * _temperature, 3.) / (MWmix * 1.66054)) / (_pressure * Parameters.pi * Math.pow(_LJdiameter, 2.) * sigma);
             _diff = _diff * 0.1;

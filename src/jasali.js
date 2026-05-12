@@ -840,7 +840,7 @@ export function GasMixture({
                     }
 
                     let tr = _temperature / LJpotentialmix;
-                    let dr = 1e06 * 0.5 * Math.pow(dipolemix, 2.) / (LJpotentialmix * Parameters.k * Math.pow(LJdiametermix, 3.));
+                    let dr = 0.5 * Math.pow(dipolemix, 2.) / (LJpotentialmix * Parameters.k * Math.pow(LJdiametermix, 3.));
                     let sigma = CollisionIntegral11(tr, dr);
                     _diff[i][j] = (3 / 16) * Math.sqrt(2. * Parameters.pi * Math.pow(Parameters.k * _temperature, 3.) / (MWmix * 1.66054)) / (_pressure * Parameters.pi * Math.pow(LJdiametermix, 2.) * sigma);
                     _diff[i][j] = _diff[i][j] * 0.1;

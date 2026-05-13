@@ -638,7 +638,7 @@ export function GasMixture({
     }
 
     function getSpeciesMolarSpecificHeat() {
-        return _species.map(specieDictionary => specieDictionary.getsMolarSpecificHeat())
+        return _species.map(specieDictionary => specieDictionary.getMolarSpecificHeat())
     }
 
     function getSpeciesMassSpecificHeat() {
@@ -730,7 +730,7 @@ export function GasMixture({
     }
 
     function getSpeciesMolarInternalEnergy() {
-        return _species.map(specieDictionary => specieDictionary.geMolarInternalEnergy())
+        return _species.map(specieDictionary => specieDictionary.getMolarInternalEnergy())
     }
 
     function getSpeciesMassInternalEnergy() {
@@ -830,7 +830,7 @@ export function GasMixture({
                             chi = 1. + 0.25 * polarn * dipolep * Math.sqrt(_LJpotential[j] / _LJpotential[i]);
                         } else {
                             polarn = _polar[j] / Math.pow(_LJdiameter[j], 3.);
-                            dipolep = 1e02 * _dipole[i] / Math.sqrt(_LJpotential[i] * 1.3806488 * Math.pow(_LJdiameter[innerWidth], 3.));
+                            dipolep = 1e02 * _dipole[i] / Math.sqrt(_LJpotential[i] * 1.3806488 * Math.pow(_LJdiameter[j], 3.));
                             chi = 1. + 0.25 * polarn * dipolep * Math.sqrt(_LJpotential[i] / _LJpotential[j]);
 
                         }

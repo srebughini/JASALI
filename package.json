@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "npx esbuild src/jasali.js --bundle --format=iife --global-name=jasali --outfile=jasali.js"
+    "build": "npx esbuild src/jasali.js --bundle --format=esm --global-name=jasali --outfile=jasali.js"
   },
   "keywords": [
     "chemistry",

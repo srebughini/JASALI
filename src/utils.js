@@ -24,6 +24,9 @@ export function RoundMatrix(matrix, numberOfSignificants = 3) {
 }
 
 export function RunAssertForFloat(value, expected, numberOfSignificants = 3) {
+    if (Array.isArray(value) || Array.isArray(expected)) {
+        throw new TypeError("RunAssertForFloat expects scalars; use RunAssertForArray for arrays");
+    }
     return assert.equal(RoundFloat(value, numberOfSignificants), RoundFloat(expected, numberOfSignificants))
 }
 

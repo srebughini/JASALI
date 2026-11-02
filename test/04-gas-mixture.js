@@ -266,12 +266,12 @@ describe('GasMixture.getThermalConductivity()', function () {
 
 describe('GasMixture.updateGasState()', function () {
   let numberOfSignificants = 3
-  mixture.updateGasState(state_new);
   let expected = RoundArray([298.15, 101325], numberOfSignificants)
   it('should return ' + expected + ' when the test mixture is used', function () {
-    RunAssertForFloat([mixture.getTemperature(), mixture.getPressure()], expected, numberOfSignificants);
+    mixture.updateGasState(state_new);
+    RunAssertForArray([mixture.getTemperature(), mixture.getPressure()], expected, numberOfSignificants);
+    mixture.updateGasState(state);
   });
-  mixture.updateGasState(state);
 });
 
 
@@ -294,6 +294,6 @@ describe('GasMixture.calculateChemicalEquilibriumTP()', function () {
 
   let expected = RoundArray([0.0511194, 0.25659853, 0.6922820184], numberOfSignificants)
   it('should return ' + expected + ' when the test mixture is used', function () {
-    RunAssertForFloat(m.calculateChemicalEquilibriumTP(), expected, numberOfSignificants);
+    RunAssertForArray(m.calculateChemicalEquilibriumTP(), expected, numberOfSignificants);
   });
 });

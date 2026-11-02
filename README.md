@@ -9,7 +9,7 @@
 </p>
 
 ## 1. Installation
-**J**a**S**ali is part of the [ASALI](https://github.com/srebughini/JASALI) project and it is a **JavaScript** library to estimate **thermodynamic** and **transport** properties of **gas mixtures**.  
+**J**a**S**ali is part of the [ASALI](https://github.com/srebughini/ASALI) project and it is a **JavaScript** library to estimate **thermodynamic** and **transport** properties of **gas mixtures**.  
 Its [npm package](https://www.npmjs.com/package/jasali) can be installed as follow:
 
 ```

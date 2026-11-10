@@ -7740,8 +7740,7 @@ export default function ThermoParameter() {
         try {
             return _thermoDict[gasSpecieName].slice(0, 7);
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -7749,8 +7748,7 @@ export default function ThermoParameter() {
         try {
             return _thermoDict[gasSpecieName].slice(7, 14);
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 

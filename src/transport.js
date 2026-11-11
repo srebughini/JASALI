@@ -4359,8 +4359,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][0];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4368,8 +4367,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][1];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4377,8 +4375,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][2];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4386,8 +4383,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][3];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4395,8 +4391,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][4];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4404,8 +4399,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][5];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 
@@ -4413,8 +4407,7 @@ export default function TransportParameters() {
         try {
             return _transportDict[gasSpecieName][6];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 

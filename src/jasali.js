@@ -509,7 +509,7 @@ export function GasMixture({
     }
 
     if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-08) {
-        AsaliError("Composition sum != 1");
+        throw new AsaliError("Composition sum != 1");
     } else {
         for (let i = 0; i < _numberOfSpecies; i++) {
             _species[i].updateMoleFraction(_moleFraction[i]);
@@ -1025,4 +1025,4 @@ export function GasMixture({
 }
 
 export { Molecule } from "./molecule.js"
-export { Fractions } from "./utils.js"
+export { Fractions, AsaliError } from "./utils.js"

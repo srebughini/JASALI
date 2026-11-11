@@ -46,8 +46,9 @@ export function UniqueArray(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-export function AsaliError(message) {
-    console.log(message);
-    alert(message);
-    exit();
+export class AsaliError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'AsaliError';
+    }
 }

@@ -121,6 +121,10 @@ interface IGasMixture {
   getThermalConductivity(): number;
 }
 
+export class AsaliError extends Error {
+  constructor(message: string);
+}
+
 export function GasState(values: {
   temperature: number;
   pressure: number;

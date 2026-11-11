@@ -1740,8 +1740,7 @@ export function Molecule(gasSpecieName) {
         try {
             return moleculesDict[gasSpecieName];
         } catch (error) {
-            console.log(error);
-            AsaliError("Unknwon species name: " + gasSpecieName)
+            throw new AsaliError("Unknown species name: " + gasSpecieName)
         }
     }
 

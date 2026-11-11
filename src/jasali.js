@@ -876,6 +876,9 @@ export function GasMixture({
 
     function getMixtureDiffusion() {
         _calculateMixtureDiffusion();
+        if (_numberOfSpecies===1){
+            return [getBinaryDiffusion()[0][0]];
+        }
         return _diffMix;
     }
 

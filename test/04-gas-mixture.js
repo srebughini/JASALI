@@ -230,6 +230,19 @@ describe('GasMixture.getMixtureDiffusion()', function () {
   it('should return ' + expected + ' when the test mixture is used', function () {
     RunAssertForArray(mixture.getMixtureDiffusion(), expected, numberOfSignificants);
   });
+  let testMixturePure = {
+    "H2":1.0
+  }
+  let mixturePure = GasMixture({
+    gasState: state,
+    mixtureComposition: testMixturePure,
+    compositionType: "mole"
+  });
+  let expectedPure = [mixturePure.getBinaryDiffusion()[0][0]];
+  it('should return ' + expectedPure + ' when the test mixture is used', function () {
+    RunAssertForArray(mixturePure.getMixtureDiffusion(), expectedPure, numberOfSignificants);
+  });
+
 });
 
 describe('GasMixture.getBinaryDiffusion()', function () {

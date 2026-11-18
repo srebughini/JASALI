@@ -5,10 +5,9 @@ import {
   RunAssertForArray,
   RoundMatrix,
   RunAssertForMatrix,
-  RunAssertForDictionary,
-  Fractions,
-  Parameters
-} from "../src/utils.js"
+  RunAssertForDictionary
+} from "./helpers.js"
+import { Fractions, Parameters } from "../src/utils.js"
 import * as assert from 'assert'
 
 describe('RoundFloat', function () {

@@ -5,7 +5,7 @@ import {
 import {
   RoundFloat,
   RunAssertForFloat
-} from "../src/utils.js"
+} from "./helpers.js"
 import * as assert from 'assert'
 
 let state = GasState({

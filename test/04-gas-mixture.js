@@ -10,7 +10,7 @@ import {
   RunAssertForFloat,
   RunAssertForMatrix,
   RunAssertForDictionary
-} from "../src/utils.js"
+} from "./helpers.js"
 import * as assert from 'assert'
 
 let state = GasState({

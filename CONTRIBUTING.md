@@ -31,7 +31,7 @@ npx mocha test/03-molecule.js     # one test file
 
 Please note:
 
-- Use `RunAssertForFloat` for single numbers only. For arrays use `RunAssertForArray`, and for matrices `RunAssertForMatrix` (`src/utils.js`). `RunAssertForFloat` given an array compares `NaN` with `NaN` and always passes.
+- Use `RunAssertForFloat` for single numbers only. For arrays use `RunAssertForArray`, and for matrices `RunAssertForMatrix` (`test/helpers.js`). `RunAssertForFloat` given an array compares `NaN` with `NaN` and always passes.
 - There is no continuous integration yet, so please run `npm test` before you open a pull request.
 - Some files (`test/00-utils.js`, `test/01-gas-state.js`, `test/02-gas-specie.js`) use Windows (CRLF) line endings. Keep the line endings of the files you edit, so that the diff only shows your change.
 

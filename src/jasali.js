@@ -540,6 +540,15 @@ export function GasMixture({
         for (let i = 0; i < _numberOfSpecies; i++) {
             _species[i].updateGasState(gasState)
         }
+        // Mixture properties are computed from per-species snapshots taken at
+        // construction; refresh them so the recomputation uses the new state.
+        _cpMole = _species.map(specie => specie.getMolarSpecificHeat())
+        _cpMass = _species.map(specie => specie.getMassSpecificHeat())
+        _hMole = _species.map(specie => specie.getMolarEnthalpy())
+        _hMass = _species.map(specie => specie.getMassEnthalpy())
+        _sMole = _species.map(specie => specie.getMolarEntropy())
+        _mu = _species.map(specie => specie.getViscosity())
+        _cond = _species.map(specie => specie.getThermalConductivity())
         return this;
     }
 

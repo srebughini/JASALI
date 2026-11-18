@@ -310,3 +310,39 @@ describe('GasMixture.calculateChemicalEquilibriumTP()', function () {
     RunAssertForArray(m.calculateChemicalEquilibriumTP(), expected, numberOfSignificants);
   });
 });
+
+describe('GasMixture.updateGasState() refreshes temperature-dependent properties', function () {
+  const composition = { "H2": 0.1, "O2": 0.2, "N2": 0.7 };
+  const properties = [
+    "getViscosity",
+    "getThermalConductivity",
+    "getMolarSpecificHeat",
+    "getMassSpecificHeat",
+    "getMolarEnthalpy",
+    "getMassEnthalpy",
+    "getMolarEntropy",
+    "getMassEntropy",
+    "getMolarInternalEnergy",
+    "getMolarGibbsFreeEnergy"
+  ];
+
+  for (const property of properties) {
+    it('should recompute ' + property + ' after changing the gas state', function () {
+      const fresh = GasMixture({
+        gasState: GasState({ temperature: 1000, pressure: 1e5 }),
+        mixtureComposition: composition,
+        compositionType: "mole"
+      });
+      const updated = GasMixture({
+        gasState: GasState({ temperature: 393.15, pressure: 4e5 }),
+        mixtureComposition: composition,
+        compositionType: "mole"
+      });
+      updated.updateGasState(GasState({ temperature: 1000, pressure: 1e5 }));
+      const expected = fresh[property]();
+      const actual = updated[property]();
+      const relativeError = Math.abs(actual - expected) / (Math.abs(expected) || 1);
+      assert.ok(relativeError < 1e-9, property + ': expected ' + expected + ', got ' + actual);
+    });
+  }
+});
